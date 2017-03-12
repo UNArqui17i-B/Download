@@ -1,0 +1,8 @@
+#%RAML 1.0
+title: Download file API
+baseUri: http://localhost:4025
+mediaType: application/json
+
+/download/{userEmail}/{fileId}:
+    get:
+        description: Downloads the file if it's shared
