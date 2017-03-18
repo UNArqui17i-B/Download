@@ -54,12 +54,11 @@ func ReceiveRequest(w rest.ResponseWriter, req *rest.Request) {
 		IdFile: 	req.PathParam("id"),
 		UserEmail: 	m["email"][0],
 	}
-	w.WriteJson(&fileRequest)
 
-	GetAttachment(DBurl, fileRequest.IdFile, fileRequest.UserEmail)
+	GetAttachment(w, DBurl, fileRequest.IdFile, fileRequest.UserEmail)
 }
 
-func GetAttachment(db string, id string,  email string){
+func GetAttachment(w rest.ResponseWriter, db string, id string,  email string){
 	var buffer bytes.Buffer
 
 	buffer.WriteString(db)
@@ -73,6 +72,11 @@ func GetAttachment(db string, id string,  email string){
 	if err != nil {
 		log.Fatal("Connection to DB response: ", err)
 		return	
+	}
+
+	if resp.StatusCode != 200 {
+		w.WriteHeader(resp.StatusCode)
+		return
 	}
 
 	fmt.Printf("ID in DB result: %s\n", resp.Status);
