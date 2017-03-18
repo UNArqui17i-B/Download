@@ -3,6 +3,11 @@ title: Download file API
 baseUri: http://localhost:4025
 mediaType: application/json
 
-/download/{userEmail}/{fileId}:
-    get:
-        description: Downloads the file if it's shared
+/download:
+	/{fileId}:
+	    get:
+	        description: Downloads the file if it's shared
+	        uriParameters:
+	        	email:
+	        		description: Email that requests the file
+	        		type: string
