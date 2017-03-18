@@ -7,7 +7,7 @@ import (
 		"fmt"
 		"bytes"
 		"encoding/json"
-		//"github.com/leesper/couchdb-golang"
+		"github.com/fjl/go-couchdb"
 )
 
 const DBurl string = "http://127.0.0.1:5984/blinkbox_files"
@@ -26,6 +26,10 @@ type FileInformation struct{
 	ExpiringDate float64 `json:"expiring_date"`
 	Owner string `json:"owner"`
 	Shared []string `json:"shared"`
+}
+
+type Result struct{
+	Url string
 }
 
 func VerifyDatabaseExistance(url string) {
@@ -97,9 +101,32 @@ func GetAttachment(w rest.ResponseWriter, db string, id string,  email string){
 	doc := new(FileInformation)
 	defer resp.Body.Close()
 	err = json.NewDecoder(resp.Body).Decode(&doc)
-	fmt.Println(err)
-	fmt.Println(doc)
-	fmt.Println(doc.Shared)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// To implement: Check if is the owner
+	if isValueInList(email, doc.Shared) {
+		c, err := couchdb.NewClient("http://127.0.0.1:5984/", nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		att, err := c.DB("blinkbox_files").Attachment(doc.Id, doc.Name + "." + doc.Extension, "")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		buffer.WriteString("/")
+		buffer.WriteString(att.Name)
+
+		result := Result{
+			Url: buffer.String(),
+		}
+
+		w.WriteJson(&result)
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
 func main() {
