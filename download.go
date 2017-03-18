@@ -17,20 +17,15 @@ type RequestedFile struct{
 	UserEmail string
 }
 
-type File struct{
-	files FileInformation
-}
-
 type FileInformation struct{
-	_id string
-	name string
-	extension string
-	size int 
-	uploaded_date float64
-	expiring_date float64
-	owner string
-	shared []string
-	_attachments []byte
+	Id string `json:"_id"`
+	Name string `json:"name"`
+	Extension string `json:"extension"`
+	Size int `json:"size"`
+	UploadedDate float64 `json:"uploaded_date"`
+	ExpiringDate float64 `json:"expiring_date"`
+	Owner string `json:"owner"`
+	Shared []string `json:"shared"`
 }
 
 func VerifyDatabaseExistance(url string) {
@@ -99,11 +94,12 @@ func GetAttachment(w rest.ResponseWriter, db string, id string,  email string){
 
 	fmt.Printf("ID in DB result: %s\n", resp.Status)
 
-	doc := new(File)
+	doc := new(FileInformation)
 	defer resp.Body.Close()
 	err = json.NewDecoder(resp.Body).Decode(&doc)
 	fmt.Println(err)
 	fmt.Println(doc)
+	fmt.Println(doc.Shared)
 }
 
 func main() {
