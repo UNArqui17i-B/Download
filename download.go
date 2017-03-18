@@ -5,21 +5,14 @@ import (
 		"log"
 		"net/http"
 		"fmt"
+		"bytes"
 )
+
+const DBurl string = "http://127.0.0.1:5984/blinkbox_files"
 
 type RequestedFile struct{
 	IdFile string
 	UserEmail string
-}
-
-func ReceiveRequest(w rest.ResponseWriter, req *rest.Request) {
-	m := req.URL.Query()
-
-	fileRequest := RequestedFile{
-		IdFile: 	req.PathParam("id"),
-		UserEmail: 	m["email"][0],
-	}
-	w.WriteJson(&fileRequest)
 }
 
 func VerifyDatabaseExistance(url string) {
@@ -54,6 +47,37 @@ func VerifyDatabaseExistance(url string) {
 	}
 }
 
+func ReceiveRequest(w rest.ResponseWriter, req *rest.Request) {
+	m := req.URL.Query()
+
+	fileRequest := RequestedFile{
+		IdFile: 	req.PathParam("id"),
+		UserEmail: 	m["email"][0],
+	}
+	w.WriteJson(&fileRequest)
+
+	GetAttachment(DBurl, fileRequest.IdFile, fileRequest.UserEmail)
+}
+
+func GetAttachment(db string, id string,  email string){
+	var buffer bytes.Buffer
+
+	buffer.WriteString(db)
+	if db[len(db)-1:] != "/" {
+		buffer.WriteString("/")
+	}
+	buffer.WriteString(id)
+	url := buffer.String()
+
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal("Connection to DB response: ", err)
+		return	
+	}
+
+	fmt.Printf("ID in DB result: %s\n", resp.Status);
+}
+
 func main() {
 	api := rest.NewApi()
 	api.Use(rest.DefaultDevStack...)
@@ -65,7 +89,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	VerifyDatabaseExistance("http://127.0.0.1:5984/blinkbox_files")
+	VerifyDatabaseExistance(DBurl)
 
 	api.SetApp(router)
 	log.Fatal(http.ListenAndServe(":4025", api.MakeHandler()))
