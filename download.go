@@ -6,6 +6,8 @@ import (
 		"net/http"
 		"fmt"
 		"bytes"
+		"encoding/json"
+		//"github.com/leesper/couchdb-golang"
 )
 
 const DBurl string = "http://127.0.0.1:5984/blinkbox_files"
@@ -13,6 +15,22 @@ const DBurl string = "http://127.0.0.1:5984/blinkbox_files"
 type RequestedFile struct{
 	IdFile string
 	UserEmail string
+}
+
+type File struct{
+	files FileInformation
+}
+
+type FileInformation struct{
+	_id string
+	name string
+	extension string
+	size int 
+	uploaded_date float64
+	expiring_date float64
+	owner string
+	shared []string
+	_attachments []byte
 }
 
 func VerifyDatabaseExistance(url string) {
@@ -79,7 +97,13 @@ func GetAttachment(w rest.ResponseWriter, db string, id string,  email string){
 		return
 	}
 
-	fmt.Printf("ID in DB result: %s\n", resp.Status);
+	fmt.Printf("ID in DB result: %s\n", resp.Status)
+
+	doc := new(File)
+	defer resp.Body.Close()
+	err = json.NewDecoder(resp.Body).Decode(&doc)
+	fmt.Println(err)
+	fmt.Println(doc)
 }
 
 func main() {
@@ -97,4 +121,13 @@ func main() {
 
 	api.SetApp(router)
 	log.Fatal(http.ListenAndServe(":4025", api.MakeHandler()))
+}
+
+func isValueInList(value string, list []string) bool{
+	for _, curr := range list {
+		if curr == value {
+			return true
+		}
+	}
+	return false
 }
