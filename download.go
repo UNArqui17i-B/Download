@@ -126,6 +126,8 @@ func GetAttachment(w rest.ResponseWriter, db string, id string,  email string){
 
 		w.WriteJson(&result)
 		w.WriteHeader(http.StatusOK)
+	}else {
+		w.WriteHeader(http.StatusUnauthorized)
 	}
 }
 
