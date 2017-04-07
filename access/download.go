@@ -10,14 +10,12 @@ import (
 		"github.com/fjl/go-couchdb"
 )
 
-const DBurl string = "http://127.0.0.1:5984/blinkbox_files"
-
 type RequestedFile struct{
 	IdFile string
 	UserEmail string
 }
 
-type FileInformation struct{
+/*type FileInformation struct{
 	Id string `json:"_id"`
 	Name string `json:"name"`
 	Extension string `json:"extension"`
@@ -26,42 +24,10 @@ type FileInformation struct{
 	ExpiringDate float64 `json:"expiring_date"`
 	Owner string `json:"owner"`
 	Shared []string `json:"shared"`
-}
+}*/
 
 type Result struct{
 	Url string
-}
-
-func VerifyDatabaseExistance(url string) {
-	req, err := http.NewRequest("HEAD", url, nil)
-	if err != nil {
-		log.Fatal("Database connection request: ", err)
-		return	
-	}
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal("Database connection do: ", err)
-	}
-
-	fmt.Printf("Database connection: %s\n", resp.Status)
-
-	if resp.StatusCode == 404 {
-		req, err = http.NewRequest("PUT", url, nil)
-		if err != nil {
-			log.Fatal("Database creation request: ", err)
-			return
-		}
-
-		resp, err = client.Do(req)
-		if err != nil {
-			log.Fatal("Database creation do: ", err)
-		}
-
-		fmt.Printf("Database creation: %s\n", resp.Status)
-	}
 }
 
 func ReceiveRequest(w rest.ResponseWriter, req *rest.Request) {
