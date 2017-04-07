@@ -1,4 +1,4 @@
-package main 
+package access
 
 import (
 		"github.com/ant0ine/go-json-rest/rest"
@@ -131,7 +131,7 @@ func GetAttachment(w rest.ResponseWriter, db string, id string,  email string){
 	}
 }
 
-func main() {
+/*func main() {
 	api := rest.NewApi()
 	api.Use(rest.DefaultDevStack...)
 	router, err := rest.MakeRouter(
@@ -146,7 +146,7 @@ func main() {
 
 	api.SetApp(router)
 	log.Fatal(http.ListenAndServe(":4025", api.MakeHandler()))
-}
+}*/
 
 func isValueInList(value string, list []string) bool{
 	for _, curr := range list {
