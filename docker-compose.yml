@@ -1,0 +1,4 @@
+notification-ms:
+  build: ./access
+  ports:
+    - "4025:4025"
