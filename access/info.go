@@ -1,18 +1,16 @@
 package access
 
 import (
-	//"fmt"
 	"net/http"
 	"bytes"
 	"log"
 	"encoding/json"
+	"github.com/gorilla/mux"
 )
 
-
 func GetInformation(rw http.ResponseWriter, req *http.Request) {
-	VerifyDatabaseExistance(DBurl);
-
-	fileID := req.URL.Query().Get("id")
+	vars := mux.Vars(req)
+	fileID := vars["id"]
 
 	if fileID != "" {
 		var buffer bytes.Buffer
@@ -36,7 +34,13 @@ func GetInformation(rw http.ResponseWriter, req *http.Request) {
 			log.Fatal(err)
 		}
 
-		json.NewEncoder(rw).Encode(&doc)
+		js, err := json.Marshal(doc)
+		if err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
+
+		rw.Header().Set("Content-Type", "application/json")
+		rw.Write(js)
 		rw.WriteHeader(http.StatusOK)
 	}
 }
