@@ -27,7 +27,7 @@ func FilesSharedWith(rw http.ResponseWriter, req *http.Request)  {
 
 	for _, element := range allDocuments.Rows {
 		if isValueInList(email, element.Document.Shared) {
-			result.IDs = append(result.IDs, element.Id)
+			result.Documents = append(result.Documents, element.Document)
 		}
 	}
 

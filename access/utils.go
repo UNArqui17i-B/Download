@@ -22,7 +22,7 @@ type FileInformation struct{
 }
 
 type SharedWith struct {
-	IDs []string `json:"shared_ids"`
+	Documents []FileInformation `json:"shared_documents"`
 }
 
 type AllDocuments struct {
