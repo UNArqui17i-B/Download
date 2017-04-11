@@ -6,6 +6,8 @@ import(
 	"fmt"
 )
 
+const url string = "http://127.0.0.1:5984"
+const DBname string = "blinkbox_files"
 const DBurl string = "http://127.0.0.1:5984/blinkbox_files"
 
 type FileInformation struct{
@@ -49,4 +51,13 @@ func VerifyDatabaseExistance(url string) {
 
 		fmt.Printf("Database creation: %s\n", resp.Status)
 	}
+}
+
+func isValueInList(value string, list []string) bool {
+	for _, curr := range list {
+		if curr == value {
+			return true
+		}
+	}
+	return false
 }

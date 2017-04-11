@@ -14,6 +14,7 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/info/{id}", access.GetInformation)
+	router.HandleFunc("/download/{id}/{email}", access.Download)
 	router.HandleFunc("/", func(rw http.ResponseWriter, req *http.Request) {
 		fmt.Println("Default")
 	})

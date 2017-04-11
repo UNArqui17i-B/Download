@@ -16,8 +16,7 @@ func GetInformation(rw http.ResponseWriter, req *http.Request) {
 		var buffer bytes.Buffer
 
 		// Get complete document URL
-		buffer.WriteString(DBurl)
-		buffer.WriteString("/")
+		buffer.WriteString(DBurl + "/")
 		buffer.WriteString(fileID)
 		url := buffer.String()
 
