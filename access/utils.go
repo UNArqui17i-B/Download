@@ -21,6 +21,21 @@ type FileInformation struct{
 	Shared []string `json:"shared"`
 }
 
+type SharedWith struct {
+	IDs []string `json:"shared_ids"`
+}
+
+type AllDocuments struct {
+	Offset int `json:"offset"`
+	Rows []DocumentInformation `json:"rows"`
+	TotalRows int `json:"total_rows"`
+}
+
+type DocumentInformation struct {
+	Id string `json:"id"`
+	Document FileInformation `json:"doc"`
+}
+
 func VerifyDatabaseExistance(url string) {
 	req, err := http.NewRequest("HEAD", url, nil)
 	if err != nil {
