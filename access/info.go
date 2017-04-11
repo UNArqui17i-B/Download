@@ -39,8 +39,12 @@ func GetInformation(rw http.ResponseWriter, req *http.Request) {
 			http.Error(rw, err.Error(), http.StatusInternalServerError)
 		}
 
-		rw.Header().Set("Content-Type", "application/json")
-		rw.Write(js)
-		rw.WriteHeader(http.StatusOK)
+		if resp.StatusCode == http.StatusOK {
+			rw.Header().Set("Content-Type", "application/json")
+			rw.WriteHeader(http.StatusOK)
+			rw.Write(js)
+		} else {
+			rw.WriteHeader(http.StatusNotFound)
+		}
 	}
 }
