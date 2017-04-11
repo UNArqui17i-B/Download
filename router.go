@@ -4,21 +4,16 @@ import(
 	"github.com/gorilla/mux"
 	"fileAccess/access"
 	"net/http"
-	"fmt"
 )
-
-func notFound(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotFound)
-}
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/info/{id}", access.GetInformation)
 	router.HandleFunc("/download/{id}/{email}", access.Download)
-	router.HandleFunc("/", func(rw http.ResponseWriter, req *http.Request) {
-		fmt.Println("Default")
+
+	router.NotFoundHandler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		rw.WriteHeader(http.StatusNotFound)
 	})
-	router.NotFoundHandler = http.HandlerFunc(notFound)
 
 	access.VerifyDatabaseExistance(access.DBurl)
 
