@@ -6,6 +6,7 @@ import(
 	"log"
 	"github.com/gorilla/mux"
 	"encoding/json"
+	"os"
 )
 
 func FilesSharedWith(rw http.ResponseWriter, req *http.Request)  {
@@ -13,12 +14,12 @@ func FilesSharedWith(rw http.ResponseWriter, req *http.Request)  {
 
 	email := vars["email"]
 
-	client, err := couchdb.NewClient(url, nil)
+	client, err := couchdb.NewClient(os.Getenv("Url"), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	db := client.DB(DBname)
+	db := client.DB(os.Getenv("DBName"))
 
 	allDocuments := new(AllDocuments)
 
