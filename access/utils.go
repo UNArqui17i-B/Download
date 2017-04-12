@@ -6,10 +6,6 @@ import(
 	"fmt"
 )
 
-const url string = "http://127.0.0.1:5984"
-const DBname string = "blinkbox_files"
-const DBurl string = "http://127.0.0.1:5984/blinkbox_files"
-
 type FileInformation struct{
 	Id string `json:"_id"`
 	Name string `json:"name"`

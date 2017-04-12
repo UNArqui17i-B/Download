@@ -4,7 +4,12 @@ import(
 	"github.com/gorilla/mux"
 	"fileAccess/access"
 	"net/http"
+	"os"
 )
+
+var DefaultValues = map[string]string{
+	"Url": "http://127.0.0.1:5984",
+	"DBName": "blinkbox_files"}
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
@@ -15,7 +20,13 @@ func main() {
 		rw.WriteHeader(http.StatusNotFound)
 	})
 
-	access.VerifyDatabaseExistance(access.DBurl)
+	for key, val := range DefaultValues {
+		if len(os.Getenv(key)) == 0 {
+			os.Setenv(key, val)
+		}
+	}
+
+	access.VerifyDatabaseExistance(os.Getenv("Url") + "/" + os.Getenv("DBName"))
 
 	http.Handle("/", router)
 	http.ListenAndServe(":4025", nil)

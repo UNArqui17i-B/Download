@@ -6,6 +6,7 @@ import(
 	"github.com/fjl/go-couchdb"
 	"log"
 	"io"
+	"os"
 )
 
 func Download(rw http.ResponseWriter, req *http.Request)  {
@@ -14,12 +15,12 @@ func Download(rw http.ResponseWriter, req *http.Request)  {
 	fileID := vars["id"]
 	email := vars["email"]
 
-	client, err := couchdb.NewClient(url, nil)
+	client, err := couchdb.NewClient(os.Getenv("Url"), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	db := client.DB(DBname)
+	db := client.DB(os.Getenv("DBName"))
 
 	doc := new(FileInformation)
 	err = db.Get(fileID, &doc, nil)

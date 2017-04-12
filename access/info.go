@@ -6,6 +6,7 @@ import (
 	"log"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"os"
 )
 
 func GetInformation(rw http.ResponseWriter, req *http.Request) {
@@ -16,7 +17,7 @@ func GetInformation(rw http.ResponseWriter, req *http.Request) {
 		var buffer bytes.Buffer
 
 		// Get complete document URL
-		buffer.WriteString(DBurl + "/")
+		buffer.WriteString(os.Getenv("Url") + "/" + os.Getenv("DBName") + "/")
 		buffer.WriteString(fileID)
 		url := buffer.String()
 
