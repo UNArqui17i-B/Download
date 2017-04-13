@@ -9,7 +9,7 @@ import (
 
 var DefaultValues = map[string]string{
 	"DB_PORT": "5984",
-	"DB_URL": "http://127.0.0.1",
+	"DB_URL": "127.0.0.1",
 	"DB_NAME": "blinkbox_files",
 	"HOST_PORT": "4025",
 	"HOST_URL": "0.0.0.0"}
@@ -31,7 +31,7 @@ func main() {
 		}
 	}
 
-	os.Setenv("DB_URL", os.Getenv("DB_URL") + ":" + os.Getenv("DB_PORT"))
+	os.Setenv("DB_URL", "http://" + os.Getenv("DB_URL") + ":" + os.Getenv("DB_PORT"))
 
 	access.VerifyDatabaseExistance(os.Getenv("DB_URL") + "/" + os.Getenv("DB_NAME"))
 
