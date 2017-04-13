@@ -16,6 +16,7 @@ func main() {
 	router.HandleFunc("/fileAccess/info/{id}", access.GetInformation)
 	router.HandleFunc("/fileAccess/download/{id}/{email}", access.Download)
 	router.HandleFunc("/fileAccess/sharedWith/{email}", access.FilesSharedWith)
+	router.HandleFunc("/fileAccess/ownedBy/{email}", access.OwnedBy)
 
 	router.NotFoundHandler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusNotFound)
