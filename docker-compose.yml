@@ -1,0 +1,16 @@
+file-access-db:
+  image: klaemo/couchdb:latest
+  ports:
+    - "3010:5984"
+file-access-ms:
+  build: .
+  ports:
+    - "4025:4025"
+  environment:
+    DB_NAME: "blinkbox_files"
+    DB_URL: "file-access-db"
+    DB_PORT: "5984"
+    HOST_PORT: "4025"
+    HOST_URL: "0.0.0.0"
+  links:
+    - file-access-db
