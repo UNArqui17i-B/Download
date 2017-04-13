@@ -13,7 +13,7 @@ type FileInformation struct{
 	Size int `json:"size"`
 	UploadedDate float64 `json:"uploaded_date"`
 	ExpiringDate float64 `json:"expiring_date"`
-	Owner string `json:"owner"`
+	Owner string `json:"owner_id"`
 	Shared []string `json:"shared"`
 }
 
