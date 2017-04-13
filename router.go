@@ -8,8 +8,11 @@ import (
 )
 
 var DefaultValues = map[string]string{
-	"Url": "http://127.0.0.1:5984",
-	"DBName": "blinkbox_files"}
+	"DB_PORT": "5984",
+	"DB_URL": "http://127.0.0.1",
+	"DB_NAME": "blinkbox_files",
+	"HOST_PORT": "4025",
+	"HOST_URL": "0.0.0.0"}
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
@@ -28,8 +31,10 @@ func main() {
 		}
 	}
 
-	access.VerifyDatabaseExistance(os.Getenv("Url") + "/" + os.Getenv("DBName"))
+	os.Setenv("DB_URL", os.Getenv("DB_URL") + ":" + os.Getenv("DB_PORT"))
+
+	access.VerifyDatabaseExistance(os.Getenv("DB_URL") + "/" + os.Getenv("DB_NAME"))
 
 	http.Handle("/", router)
-	http.ListenAndServe(":4025", nil)
+	http.ListenAndServe(os.Getenv("HOST_URL") + ":" + os.Getenv("HOST_PORT"), nil)
 }
