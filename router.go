@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"github.com/gorilla/mux"
 	"fileAccess/access"
 	"net/http"
@@ -13,8 +13,10 @@ var DefaultValues = map[string]string{
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/info/{id}", access.GetInformation)
-	router.HandleFunc("/download/{id}/{email}", access.Download)
+	router.HandleFunc("/fileAccess/info/{id}", access.GetInformation)
+	router.HandleFunc("/fileAccess/download/{id}/{email}", access.Download)
+	router.HandleFunc("/fileAccess/sharedWith/{email}", access.FilesSharedWith)
+	router.HandleFunc("/fileAccess/ownedBy/{email}", access.OwnedBy)
 
 	router.NotFoundHandler = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusNotFound)

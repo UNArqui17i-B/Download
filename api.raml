@@ -1,13 +1,70 @@
 #%RAML 1.0
-title: Download file API
-baseUri: http://localhost:4025
+title: File access API
+baseUri: http://0.0.0.0:4025
 mediaType: application/json
 
-/download:
-	/{fileId}:
-	    get:
-	        description: Downloads the file if it's shared
-	        uriParameters:
-	        	email:
-	        		description: Email that requests the file
-	        		type: string
+/fileAccess:
+  /info/{fileID}:
+    get:
+      description: Gets information from the required file using it's ID
+      responses:
+        200:
+          body:
+            application/json:
+              type: FileInformation
+                properties:
+                  Id: string
+                  Name: string
+                  Extension: string
+                  Size: int
+                  UploadedDate: float
+                  ExpiringDate: float
+                  Owner: string
+                  Shared: string[]
+        404:
+          description: File with provided ID wasn't found
+
+  /download/{fileID}/{email}:
+    get:
+      description: Retrieves required file using it's ID and the email of the user that wants to retrieve it
+      responses:
+        200:
+          description: Retrieves the requested file
+        401:
+          description: The file doesn't exist or the user doesn't have the rights to access it
+
+  /sharedWith/{email}:
+    get:
+      description: Retrieves the list of files that have been shared to an user, returns an empty list in case that the user hasn't received a file
+      responses:
+        200:
+          body:
+            application/json:
+              type: FileInformation[]
+                properties:
+                  Id: string
+                  Name: string
+                  Extension: string
+                  Size: int
+                  UploadedDate: float
+                  ExpiringDate: float
+                  Owner: string
+                  Shared: string[]
+
+  /ownedBy/{email}:
+    get:
+      description: Retrieves the list of files that a user owns, returns an empty list in case that the user doesn't own a file
+      responses:
+        200:
+          body:
+            application/json:
+              type: FileInformation[]
+                properties:
+                  Id: string
+                  Name: string
+                  Extension: string
+                  Size: int
+                  UploadedDate: float
+                  ExpiringDate: float
+                  Owner: string
+                  Shared: string[]

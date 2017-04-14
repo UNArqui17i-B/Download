@@ -26,7 +26,7 @@ func Download(rw http.ResponseWriter, req *http.Request)  {
 	err = db.Get(fileID, &doc, nil)
 
 	if email == doc.Owner || isValueInList(email, doc.Shared){
-		att, err := db.Attachment(fileID, doc.Name + "." + doc.Extension, "")
+		att, err := db.Attachment(fileID, doc.Name, "")
 		if err != nil{
 			log.Fatal(err)
 		}

@@ -13,8 +13,24 @@ type FileInformation struct{
 	Size int `json:"size"`
 	UploadedDate float64 `json:"uploaded_date"`
 	ExpiringDate float64 `json:"expiring_date"`
-	Owner string `json:"owner"`
+	Owner string `json:"owner_id"`
 	Shared []string `json:"shared"`
+	MD5 string `json:"md5"`
+}
+
+type SharedWith struct {
+	Documents []FileInformation `json:"shared_documents"`
+}
+
+type AllDocuments struct {
+	Offset int `json:"offset"`
+	Rows []DocumentInformation `json:"rows"`
+	TotalRows int `json:"total_rows"`
+}
+
+type DocumentInformation struct {
+	Id string `json:"id"`
+	Document FileInformation `json:"doc"`
 }
 
 func VerifyDatabaseExistance(url string) {
