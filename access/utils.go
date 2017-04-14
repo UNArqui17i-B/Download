@@ -15,6 +15,7 @@ type FileInformation struct{
 	ExpiringDate float64 `json:"expiring_date"`
 	Owner string `json:"owner_id"`
 	Shared []string `json:"shared"`
+	MD5 string `json:"md5"`
 }
 
 type SharedWith struct {
