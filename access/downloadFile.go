@@ -15,12 +15,12 @@ func Download(rw http.ResponseWriter, req *http.Request)  {
 	fileID := vars["id"]
 	email := vars["email"]
 
-	client, err := couchdb.NewClient(os.Getenv("Url"), nil)
+	client, err := couchdb.NewClient(os.Getenv("DB_URL"), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	db := client.DB(os.Getenv("DBName"))
+	db := client.DB(os.Getenv("DB_NAME"))
 
 	doc := new(FileInformation)
 	err = db.Get(fileID, &doc, nil)
