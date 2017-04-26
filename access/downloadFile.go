@@ -31,6 +31,7 @@ func Download(rw http.ResponseWriter, req *http.Request)  {
 			log.Fatal(err)
 		}
 
+		rw.Header().Set("Content-Type", att.Type)
 		_, err = io.Copy(rw, att.Body)
 		if err != nil {
 			log.Fatal(err)
