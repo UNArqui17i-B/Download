@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"os"
+	"fmt"
 )
 
 func GetInformation(rw http.ResponseWriter, req *http.Request) {
@@ -43,8 +44,10 @@ func GetInformation(rw http.ResponseWriter, req *http.Request) {
 			rw.Header().Set("Content-Type", "application/json")
 			rw.WriteHeader(http.StatusOK)
 			rw.Write(js)
+			fmt.Println("Info request: 200")
 		} else {
 			rw.WriteHeader(http.StatusNotFound)
+			fmt.Println("Info request: 404")
 		}
 	}
 }

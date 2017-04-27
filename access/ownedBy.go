@@ -7,6 +7,7 @@ import (
 	"log"
 	"encoding/json"
 	"github.com/fjl/go-couchdb"
+	"fmt"
 )
 
 func OwnedBy(rw http.ResponseWriter, req *http.Request)  {
@@ -35,4 +36,5 @@ func OwnedBy(rw http.ResponseWriter, req *http.Request)  {
 	rw.Header().Set("Content-Type", "application/json")
 	rw.WriteHeader(http.StatusOK)
 	rw.Write(js)
+	fmt.Println("Owned by request: 200")
 }

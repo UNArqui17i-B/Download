@@ -7,6 +7,7 @@ import(
 	"log"
 	"io"
 	"os"
+	"fmt"
 )
 
 func Download(rw http.ResponseWriter, req *http.Request)  {
@@ -36,7 +37,9 @@ func Download(rw http.ResponseWriter, req *http.Request)  {
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Println("Download request: 200")
 	}else {
 		rw.WriteHeader(http.StatusUnauthorized)
+		fmt.Println("Download request: 401")
 	}
 }
