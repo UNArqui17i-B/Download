@@ -7,6 +7,7 @@ import(
 	"github.com/gorilla/mux"
 	"encoding/json"
 	"os"
+	"fmt"
 )
 
 func FilesSharedWith(rw http.ResponseWriter, req *http.Request)  {
@@ -36,4 +37,5 @@ func FilesSharedWith(rw http.ResponseWriter, req *http.Request)  {
 	rw.Header().Set("Content-Type", "application/json")
 	rw.WriteHeader(http.StatusOK)
 	rw.Write(js)
+	fmt.Println("Shared with request: 200")
 }
