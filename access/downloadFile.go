@@ -32,6 +32,8 @@ func Download(rw http.ResponseWriter, req *http.Request)  {
 			log.Fatal(err)
 		}
 
+		rw.Header().Set("Access-Control-Allow-Origin", "*")
+		rw.Header().Set("Access-Control-Allow-Headers","Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 		rw.Header().Set("Content-Type", att.Type)
 		_, err = io.Copy(rw, att.Body)
 		if err != nil {
